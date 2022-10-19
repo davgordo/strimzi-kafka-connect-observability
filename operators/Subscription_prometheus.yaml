@@ -1,0 +1,14 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  labels:
+    operators.coreos.com/prometheus.cdc-prometheus: ''
+  name: prometheus
+  namespace: cdc-prometheus
+spec:
+  channel: beta
+  installPlanApproval: Automatic
+  name: prometheus
+  source: community-operators
+  sourceNamespace: openshift-marketplace
+  startingCSV: prometheusoperator.0.56.3

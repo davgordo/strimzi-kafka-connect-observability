@@ -1,0 +1,34 @@
+kind: KafkaConnect
+apiVersion: kafka.strimzi.io/v1beta2
+metadata:
+  name: optum-my-connect-cluster-demo
+  annotations:
+    strimzi.io/use-connector-resources: "true"
+  labels:
+    strimzi.io/cluster: optum-my-connect-cluster-demo
+ 
+spec:
+  version: 3.2.3
+  replicas: 1
+  build:
+    output:
+      type: imagestream
+      image: optum-dbz-image-stream-demo:latest
+    plugins:
+    - name: debezium-connector-mysql
+      artifacts:
+      - type: zip
+        url: https://maven.repository.redhat.com/ga/io/debezium/debezium-connector-mysql/1.9.5.Final-redhat-00001/debezium-connector-mysql-1.9.5.Final-redhat-00001-plugin.zip
+  bootstrapServers: 'optum-my-cluster-demo-kafka-bootstrap.optum-kafka-demo.svc:9093'
+  tls:
+    trustedCertificates:
+      - secretName: optum-my-cluster-demo-cluster-ca-cert
+        certificate: ca.crt
+  config:
+    group.id: connect-cluster
+    offset.storage.topic: connect-cluster-offsets
+    config.storage.topic: connect-cluster-configs
+    status.storage.topic: connect-cluster-status
+    config.storage.replication.factor: -1
+    offset.storage.replication.factor: -1
+    status.storage.replication.factor: -1

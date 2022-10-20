@@ -2,8 +2,21 @@ apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnect
 metadata:
   name: demo-connect-cluster
+  annotations: 
+    strimzi.io/use-connector-resources: "true"
 spec:
-  bootstrapServers: 'demo-cluster-kafka-bootstrap:9093'
+  bootstrapServers: demo-cluster-kafka-bootstrap:9093
+  build:
+    output:
+      image: >-
+        image-registry.openshift-image-registry.svc:5000/cdc-demo/debezium-connect-mysql:latest
+      type: docker
+    plugins:
+      - artifacts:
+          - type: zip
+            url: >-
+              https://maven.repository.redhat.com/ga/io/debezium/debezium-connector-mysql/1.9.5.Final-redhat-00001/debezium-connector-mysql-1.9.5.Final-redhat-00001-plugin.zip
+        name: debezium-mysql-connector
   config:
     config.storage.replication.factor: -1
     config.storage.topic: connect-cluster-configs

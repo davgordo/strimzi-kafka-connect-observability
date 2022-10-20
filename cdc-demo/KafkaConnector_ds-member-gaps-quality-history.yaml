@@ -1,0 +1,20 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  labels:
+    strimzi.io/cluster: demo-connect-cluster
+  name: ds-member-gaps-quality-history
+spec:
+  class: io.debezium.connector.mysql.MySqlConnector
+  config:
+    database.server.name: mysql
+    database.hostname: mysql
+    database.password: NabcLD5204AamIbx
+    database.serverTimezone: UTC
+    database.allowPublicKeyRetrieval: true
+    database.port: 3306
+    database.history.kafka.topic: DataSync.MemberGaps.QualityHistory
+    database.history.kafka.bootstrap.servers: >-
+      demo-cluster-kafka-bootstrap:9091,demo-cluster-kafka-bootstrap:9092,demo-cluster-kafka-bootstrap:9093
+    database.user: root
+  tasksMax: 1

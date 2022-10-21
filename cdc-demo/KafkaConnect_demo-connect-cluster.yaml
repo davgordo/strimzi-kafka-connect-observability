@@ -32,6 +32,11 @@ spec:
         name: kafka-connect-metrics
         key: metrics-config.yml
   replicas: 1
+  resources:
+    limits:
+      memory: 6Gi
+    requests:
+      memory: 6Gi
   template:
     connectContainer:
       env:

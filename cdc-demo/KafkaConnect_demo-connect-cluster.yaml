@@ -2,8 +2,21 @@ apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnect
 metadata:
   name: demo-connect-cluster
+  annotations: 
+    strimzi.io/use-connector-resources: "true"
 spec:
-  bootstrapServers: 'demo-cluster-kafka-bootstrap:9093'
+  bootstrapServers: demo-cluster-kafka-bootstrap:9093
+  build:
+    output:
+      image: >-
+        image-registry.openshift-image-registry.svc:5000/cdc-demo/debezium-connect-mysql:latest
+      type: docker
+    plugins:
+      - artifacts:
+          - type: zip
+            url: >-
+              https://maven.repository.redhat.com/ga/io/debezium/debezium-connector-mysql/1.9.5.Final-redhat-00001/debezium-connector-mysql-1.9.5.Final-redhat-00001-plugin.zip
+        name: debezium-mysql-connector
   config:
     config.storage.replication.factor: -1
     config.storage.topic: connect-cluster-configs
@@ -19,8 +32,27 @@ spec:
         name: kafka-connect-metrics
         key: metrics-config.yml
   replicas: 1
+  resources:
+    limits:
+      memory: 6Gi
+    requests:
+      memory: 6Gi
+  template:
+    connectContainer:
+      env:
+        - name: JAEGER_SERVICE_NAME
+          value: demo-kafka-connect
+        - name: JAEGER_ENDPOINT
+          value: >-
+            http://jaeger-collector.cdc-jaeger.svc.cluster.local:14268/api/traces
+        - name: JAEGER_SAMPLER_TYPE
+          value: const
+        - name: JAEGER_SAMPLER_PARAM
+          value: '1'
   tls:
     trustedCertificates:
       - certificate: ca.crt
         secretName: demo-cluster-cluster-ca-cert
+  tracing:
+    type: jaeger
   version: 3.2.3

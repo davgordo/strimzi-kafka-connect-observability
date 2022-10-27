@@ -12,11 +12,19 @@ spec:
         image-registry.openshift-image-registry.svc:5000/cdc-demo/debezium-connect-mysql:latest
       type: docker
     plugins:
-      - artifacts:
+      - name: debezium-mysql-connector
+        artifacts:
           - type: zip
             url: >-
               https://maven.repository.redhat.com/ga/io/debezium/debezium-connector-mysql/1.9.5.Final-redhat-00001/debezium-connector-mysql-1.9.5.Final-redhat-00001-plugin.zip
-        name: debezium-mysql-connector
+      - name: jdbc-sink-connector
+        artifacts:
+          - type: jar
+            url: https://packages.confluent.io/maven/io/confluent/kafka-connect-jdbc/5.2.1/kafka-connect-jdbc-5.2.1.jar
+      - name: mssql-driver
+        artifacts:
+          - type: jar
+            url: https://repo1.maven.org/maven2/com/microsoft/sqlserver/mssql-jdbc/8.2.2.jre8/mssql-jdbc-8.2.2.jre8.jar
   config:
     config.storage.replication.factor: -1
     config.storage.topic: connect-cluster-configs

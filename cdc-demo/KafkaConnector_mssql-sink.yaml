@@ -1,0 +1,18 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  labels:
+    strimzi.io/cluster: demo-connect-cluster
+  name: mssql-sink
+spec:
+  class: io.confluent.connect.jdbc.JdbcSinkConnector
+  config:
+    connection.url: 'jdbc:jtds:sqlserver://mssql:1433;databaseName=mydb'
+    connection.user: root
+    connection.password: NabcLD5204AamIbx
+    topics: mysql
+    batch.size: 2500
+    delete.enabled: false
+    insert.mode: upsert
+    pk.mode: record_key
+  tasksMax: 1

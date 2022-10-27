@@ -3,7 +3,7 @@ kind: KafkaConnector
 metadata:
   labels:
     strimzi.io/cluster: demo-connect-cluster
-  name: ds-member-gaps-quality-history
+  name: mysql-source
 spec:
   class: io.debezium.connector.mysql.MySqlConnector
   config:
@@ -13,7 +13,7 @@ spec:
     database.serverTimezone: UTC
     database.allowPublicKeyRetrieval: true
     database.port: 3306
-    database.history.kafka.topic: DataSync.MemberGaps.QualityHistory
+    database.history.kafka.topic: mysql
     database.history.kafka.bootstrap.servers: >-
       demo-cluster-kafka-bootstrap:9091,demo-cluster-kafka-bootstrap:9092,demo-cluster-kafka-bootstrap:9093
     database.user: root

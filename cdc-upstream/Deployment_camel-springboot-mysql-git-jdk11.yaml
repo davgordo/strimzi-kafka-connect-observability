@@ -1,0 +1,58 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  annotations:
+    alpha.image.policy.openshift.io/resolve-names: '*'
+    app.openshift.io/route-disabled: 'false'
+    app.openshift.io/vcs-ref: ''
+  name: camel-springboot-mysql-git-jdk11
+  labels:
+    app: camel-springboot-mysql-git-jdk11
+    app.kubernetes.io/component: camel-springboot-mysql-git-jdk11
+    app.kubernetes.io/instance: camel-springboot-mysql-git-jdk11
+    app.kubernetes.io/name: camel-springboot-mysql-git-jdk11
+    app.kubernetes.io/part-of: camel-mysql
+    app.openshift.io/runtime: java
+    app.openshift.io/runtime-version: openjdk-11-ubi8
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: camel-springboot-mysql-git-jdk11
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: camel-springboot-mysql-git-jdk11
+        deploymentconfig: camel-springboot-mysql-git-jdk11
+    spec:
+      containers:
+        - name: camel-springboot-mysql-git-jdk11
+          image: >-
+            image-registry.openshift-image-registry.svc:5000/cdc-upstream/camel-springboot-mysql-git-jdk11:latest
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8443
+              protocol: TCP
+            - containerPort: 8778
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: cdc-demo-config-map
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

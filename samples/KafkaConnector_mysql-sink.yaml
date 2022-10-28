@@ -1,0 +1,21 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  labels:
+    strimzi.io/cluster: demo-connect-cluster
+  name: mysql-sink
+spec:
+  class: io.confluent.connect.jdbc.JdbcSinkConnector
+  config:
+    connection.url: 'jdbc:mysql://mysql:3306/sampledb'
+    connection.user: root
+    connection.password: NabcLD5204AamIbx
+    topics: mysql.sampledb.cats
+    batch.size: 2500
+    delete.enabled: false
+    insert.mode: upsert
+    pk.mode: none
+    key.converter: org.apache.kafka.connect.json.JsonConverter
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    auto.create: true
+  tasksMax: 1

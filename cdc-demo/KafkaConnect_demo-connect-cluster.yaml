@@ -15,16 +15,19 @@ spec:
       - name: debezium-mysql-connector
         artifacts:
           - type: zip
-            url: >-
-              https://maven.repository.redhat.com/ga/io/debezium/debezium-connector-mysql/1.9.5.Final-redhat-00001/debezium-connector-mysql-1.9.5.Final-redhat-00001-plugin.zip
-      - name: jdbc-sink-connector
+            url: https://maven.repository.redhat.com/ga/io/debezium/debezium-connector-mysql/1.9.5.Final-redhat-00001/debezium-connector-mysql-1.9.5.Final-redhat-00001-plugin.zip
+      - name: sink-jdbc-connector
         artifacts:
           - type: jar
             url: https://packages.confluent.io/maven/io/confluent/kafka-connect-jdbc/5.2.1/kafka-connect-jdbc-5.2.1.jar
-      - name: mssql-driver
+          - type: jar
+            url: https://maven.repository.redhat.com/ga/mysql/mysql-connector-java/8.0.28.redhat-00001/mysql-connector-java-8.0.28.redhat-00001.jar
+          - type: jar
+            url: https://repo1.maven.org/maven2/com/microsoft/sqlserver/mssql-jdbc/11.2.1.jre11/mssql-jdbc-11.2.1.jre11.jar
+      - name: sink-file-connector
         artifacts:
           - type: jar
-            url: https://repo1.maven.org/maven2/com/microsoft/sqlserver/mssql-jdbc/8.2.2.jre8/mssql-jdbc-8.2.2.jre8.jar
+            url: https://repo1.maven.org/maven2/org/apache/kafka/connect-file/3.3.1/connect-file-3.3.1.jar
   config:
     config.storage.replication.factor: -1
     config.storage.topic: connect-cluster-configs
@@ -33,6 +36,10 @@ spec:
     offset.storage.topic: connect-cluster-offsets
     status.storage.replication.factor: -1
     status.storage.topic: connect-cluster-status
+    key.converter: org.apache.kafka.connect.json.JsonConverter
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    key.converter.schemas.enable: true
+    value.converter.schemas.enable: true
   metricsConfig:
     type: jmxPrometheusExporter
     valueFrom:

@@ -1,0 +1,51 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  annotations:
+    app.openshift.io/vcs-ref: ''
+    app.openshift.io/vcs-uri: 'https://github.com/cykumar/camel-springboot-mysql.git'
+    openshift.io/generated-by: OpenShiftWebConsole
+  name: camel-springboot-mysql-git-jdk11
+  labels:
+    app: camel-springboot-mysql-git-jdk11
+    app.kubernetes.io/component: camel-springboot-mysql-git-jdk11
+    app.kubernetes.io/instance: camel-springboot-mysql-git-jdk11
+    app.kubernetes.io/name: camel-springboot-mysql-git-jdk11
+    app.kubernetes.io/part-of: camel-mysql
+    app.openshift.io/runtime: java
+    app.openshift.io/runtime-version: openjdk-11-ubi8
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'camel-springboot-mysql-git-jdk11:latest'
+  resources: {}
+  successfulBuildsHistoryLimit: 5
+  failedBuildsHistoryLimit: 5
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        namespace: openshift
+        name: 'java:openjdk-11-ubi8'
+  postCommit: {}
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/cykumar/camel-springboot-mysql.git'
+    contextDir: /
+  triggers:
+    - type: Generic
+      generic:
+        secretReference:
+          name: camel-springboot-mysql-git-jdk11-generic-webhook-secret
+    - type: GitHub
+      github:
+        secretReference:
+          name: camel-springboot-mysql-git-jdk11-github-webhook-secret
+    - type: ImageChange
+      imageChange: {}
+    - type: ConfigChange
+  runPolicy: Serial

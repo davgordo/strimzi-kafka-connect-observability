@@ -1,0 +1,12 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  labels:
+    strimzi.io/cluster: demo-connect-cluster
+  name: file-sink
+spec:
+  class: org.apache.kafka.connect.file.FileStreamSinkConnector
+  config:
+    topics: mysql.sampledb.orders
+    file: /tmp/mysql-history.txt
+  tasksMax: 1

@@ -1,0 +1,16 @@
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  annotations:
+    app.openshift.io/vcs-ref: ''
+    app.openshift.io/vcs-uri: 'https://github.com/cykumar/camel-springboot-mysql.git'
+    openshift.io/generated-by: OpenShiftWebConsole
+  name: camel-springboot-mysql-git-jdk11
+  labels:
+    app: camel-springboot-mysql-git-jdk11
+    app.kubernetes.io/component: camel-springboot-mysql-git-jdk11
+    app.kubernetes.io/instance: camel-springboot-mysql-git-jdk11
+    app.kubernetes.io/name: camel-springboot-mysql-git-jdk11
+    app.kubernetes.io/part-of: camel-mysql
+    app.openshift.io/runtime: java
+    app.openshift.io/runtime-version: openjdk-11-ubi8

@@ -9,6 +9,7 @@ Resource configurations for quickly provisioning a MySQL change data capture sce
    oc new-project cdc-demo
    oc new-project cdc-prometheus
    oc new-project cdc-jaeger
+   oc new-project cdc-upstream
    ```
 2. Provision operators.
    ```bash
@@ -22,4 +23,8 @@ Resource configurations for quickly provisioning a MySQL change data capture sce
 4. Provision the demo CDC scenario.
    ```bash
    oc apply -f cdc-demo/ -n cdc-demo
+   ```
+5. Provision the upstream data producer
+   ```
+   oc apply -f cdc-upstream/ -n cdc-upstream
    ```

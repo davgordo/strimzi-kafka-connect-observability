@@ -1,35 +1,25 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  annotations:
-    alpha.image.policy.openshift.io/resolve-names: '*'
-    app.openshift.io/route-disabled: 'false'
-    app.openshift.io/vcs-ref: ''
-  name: camel-springboot-mysql-git-jdk11
+  name: orders
   labels:
-    app: camel-springboot-mysql-git-jdk11
-    app.kubernetes.io/component: camel-springboot-mysql-git-jdk11
-    app.kubernetes.io/instance: camel-springboot-mysql-git-jdk11
-    app.kubernetes.io/name: camel-springboot-mysql-git-jdk11
-    app.kubernetes.io/part-of: camel-mysql
-    app.openshift.io/runtime: java
-    app.openshift.io/runtime-version: openjdk-11-ubi8
+    app: orders
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: camel-springboot-mysql-git-jdk11
+      app: orders
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: camel-springboot-mysql-git-jdk11
-        deploymentconfig: camel-springboot-mysql-git-jdk11
+        app: orders
+        deploymentconfig: orders
     spec:
       containers:
-        - name: camel-springboot-mysql-git-jdk11
+        - name: orders
           image: >-
-            image-registry.openshift-image-registry.svc:5000/cdc-upstream/camel-springboot-mysql-git-jdk11:latest
+            image-registry.openshift-image-registry.svc:5000/cdc-upstream/orders:latest
           ports:
             - containerPort: 8080
               protocol: TCP
@@ -39,7 +29,12 @@ spec:
               protocol: TCP
           envFrom:
             - configMapRef:
-                name: cdc-demo-config-map
+                name: orders
+          env:
+            - name: JAEGER_SERVICE_NAME
+              value: orders-service
+            - name: JAEGER_AGENT_HOST
+              value: jaeger-collector.cdc-jaeger.svc.cluster.local
           resources: {}
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File

@@ -22,8 +22,6 @@ spec:
             url: https://packages.confluent.io/maven/io/confluent/kafka-connect-jdbc/5.2.1/kafka-connect-jdbc-5.2.1.jar
           - type: jar
             url: https://maven.repository.redhat.com/ga/mysql/mysql-connector-java/8.0.28.redhat-00001/mysql-connector-java-8.0.28.redhat-00001.jar
-          - type: jar
-            url: https://repo1.maven.org/maven2/com/microsoft/sqlserver/mssql-jdbc/11.2.1.jre11/mssql-jdbc-11.2.1.jre11.jar
       - name: sink-file-connector
         artifacts:
           - type: jar
@@ -55,19 +53,14 @@ spec:
   template:
     connectContainer:
       env:
-        - name: JAEGER_SERVICE_NAME
+        - name: OTEL_SERVICE_NAME
           value: demo-kafka-connect
-        - name: JAEGER_ENDPOINT
-          value: >-
-            http://jaeger-collector.cdc-jaeger.svc.cluster.local:14268/api/traces
-        - name: JAEGER_SAMPLER_TYPE
-          value: const
-        - name: JAEGER_SAMPLER_PARAM
-          value: '1'
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: http://jaeger-collector.cdc-jaeger.svc.cluster.local:4317
   tls:
     trustedCertificates:
       - certificate: ca.crt
         secretName: demo-cluster-cluster-ca-cert
   tracing:
-    type: jaeger
-  version: 3.2.3
+    type: opentelemetry
+  version: 3.5.0

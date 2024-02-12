@@ -8,7 +8,7 @@ metadata:
 spec:
   channel: beta
   installPlanApproval: Automatic
-  name: prometheus
-  source: community-operators
+  name: rhods-prometheus-operator
+  source: redhat-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: prometheusoperator.0.56.3
+  startingCSV: rhods-prometheus-operator.4.10.0

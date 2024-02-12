@@ -13,6 +13,7 @@ Resource configurations for quickly provisioning a MySQL change data capture sce
    ```
 2. Provision operators.
    ```bash
+   oc new-project openshift-distributed-tracing
    oc apply -f operators/
    ```
 3. Provision observability platform components.

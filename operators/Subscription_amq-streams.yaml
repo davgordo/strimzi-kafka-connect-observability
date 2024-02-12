@@ -6,9 +6,9 @@ metadata:
   name: amq-streams
   namespace: openshift-operators
 spec:
-  channel: amq-streams-2.2.x
+  channel: stable
   installPlanApproval: Automatic
   name: amq-streams
   source: redhat-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: amqstreams.v2.2.0-1
+  startingCSV: amqstreams.v2.6.0-1
